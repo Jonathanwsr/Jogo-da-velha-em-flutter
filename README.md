@@ -29,7 +29,7 @@ Foi desenvolvido para fins de estudo e prática com a criação de interfaces in
 
 # Acesse a pasta do projeto 
 
-### cd C:\Fluter-jogo_velha\flutter_application_1
+### cd flutter_application_1
 
 # Instale as dependências:
 
