@@ -11,7 +11,7 @@ class TictactoePage extends StatefulWidget {
 }
 
 class _TicTacToePageState extends State<TictactoePage> {
-  bool oTurn = true; 
+  bool oTurn = true;
   List<String> displayXO = ['', '', '', '', '', '', '', '', ''];
   List<int> matchedIndexes = [];
   int oScore = 0;
@@ -95,8 +95,8 @@ class _TicTacToePageState extends State<TictactoePage> {
             xScore++;
           }
 
-          stopTimer();
-          Future.delayed(const Duration(seconds: 2), resetBoard);
+          stopTimer(); 
+          
         });
         return;
       }
@@ -105,9 +105,8 @@ class _TicTacToePageState extends State<TictactoePage> {
     if (!winnerFound && filledBoxes == 9) {
       setState(() {
         resultDeclaration = 'Empate!';
+        stopTimer(); 
       });
-      stopTimer();
-      Future.delayed(const Duration(seconds: 2), resetBoard);
     }
   }
 
@@ -136,110 +135,127 @@ class _TicTacToePageState extends State<TictactoePage> {
     return Scaffold(
       backgroundColor: MainColor.primaryColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                 
+                  Expanded(
+                    flex: 2,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Player O', style: customFontWhite),
-                        Text(oScore.toString(), style: customFontWhite),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Player O', style: customFontWhite),
+                            Text(oScore.toString(), style: customFontWhite),
+                          ],
+                        ),
+                        const SizedBox(width: 40),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Player X', style: customFontWhite),
+                            Text(xScore.toString(), style: customFontWhite),
+                          ],
+                        ),
                       ],
                     ),
-                    const SizedBox(width: 40),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Player X', style: customFontWhite),
-                        Text(xScore.toString(), style: customFontWhite),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-           
-             Expanded(
-                flex: 4,
-                child: Center(
-                  child: AspectRatio(
-                    aspectRatio: 1, 
-                    child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                      ),
-                      itemCount: 9,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => _tapped(index),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                width: 5,
-                                color: MainColor.primaryColor,
+                  ),
+
+                 
+                  Expanded(
+                    flex: 5,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        itemCount: 9,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () => _tapped(index),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  width: 5,
+                                  color: MainColor.primaryColor,
+                                ),
+                                color: matchedIndexes.contains(index)
+                                    ? MainColor.accentColor
+                                    : MainColor.secondaryColor,
                               ),
-                              color: matchedIndexes.contains(index)
-                                  ? MainColor.accentColor
-                                  : MainColor.secondaryColor,
-                            ),
-                            child: Center(
-                              child: Text(
-                                displayXO[index],
-                                style: GoogleFonts.coiny(
-                                  textStyle: TextStyle(
-                                    fontSize: 64,
-                                    color: matchedIndexes.contains(index)
-                                        ? MainColor.secondaryColor
-                                        : MainColor.primaryColor,
+                              child: Center(
+                                child: Transform.translate(
+                                  offset: const Offset(0, -4),
+                                  child: Text(
+                                    displayXO[index],
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.coiny(
+                                      textStyle: TextStyle(
+                                        fontSize: 64,
+                                        height: 1.0,
+                                        color: matchedIndexes.contains(index)
+                                            ? MainColor.secondaryColor
+                                            : MainColor.primaryColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ),
 
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(resultDeclaration, style: customFontWhite),
-                      const SizedBox(height: 10),
-                      _buildTimer(),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                  
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(resultDeclaration, style: customFontWhite),
+                        const SizedBox(height: 10),
+                        _buildTimer(),
+                        const SizedBox(height: 20),
+
+                       
+                        if (winnerFound || (filledBoxes == 9 && resultDeclaration.isNotEmpty))
                           ElevatedButton(
-                            onPressed: startTimer,
-                            child: const Text("Start"),
-                          ),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: stopTimer,
-                            child: const Text("Pause"),
-                          ),
-                        ],
-                      )
-                    ],
+                            onPressed: resetBoard,
+                            child: const Text("Jogar novamente"),
+                          )
+                        else
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: startTimer,
+                                child: const Text("Start"),
+                              ),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: stopTimer,
+                                child: const Text("Pause"),
+                              ),
+                            ],
+                          )
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
