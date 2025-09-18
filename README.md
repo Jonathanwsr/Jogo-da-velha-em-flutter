@@ -12,7 +12,7 @@ Foi desenvolvido para fins de estudo e prática com a criação de interfaces in
 - Placar atualizado automaticamente para cada vitória.  
 - Sistema de empate.  
 - Cronômetro de 30 segundos para cada rodada.  
-- Reinício automático após o término de uma partida.  
+-  Após o término de uma partida aparece um botão chamado jogue novamente, dando o cliq ele volta ao jogo.   
 - Botões de **Start** e **Pause** para controlar o jogo.  
 
 ---
